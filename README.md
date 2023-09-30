@@ -1,4 +1,3 @@
-# Esse repositório foi feito especiamente para projetos feitos por mim em Python :D
 
 1° projeto: Sistema de Reflorestamento.
    - Projeto feito na disciplina de MI Algoritmo do curso Engenharia da Computação da UEFS.
