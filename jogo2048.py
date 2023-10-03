@@ -14,6 +14,42 @@ def geraNumeros():
     coluna = randint(0,3)
     return linha, coluna
 
+# Recebe números aleatórios para por em posições aleatórias no tabuleiro o número 2
+def colocaNumAleatorio(tabuleiro):
+    x = True
+    y = True
+    # Esse while se repete até que um número aleatório encontre uma posição vazia no tabuleiro
+    while x == True:
+        
+        i=0
+        l1, c1 = geraNumeros()
+        l2, c2 = geraNumeros()
+        
+        if tabuleiro[l1][c1] == 0:
+            tabuleiro[l1][c1] = 2
+            x = False
+        
+    while y == True:
+        
+        for l in range (0, 4):
+            for c in range (0,4):
+                if (tabuleiro[l][c] != 0):
+                    i+=1
+                
+        # A condição abaixo serve para anular as posições iguais, pois devem estar em posições diferentes
+        if (l1 == l2) and (c1 == c2):
+            l2, c2 = geraNumeros()
+        elif (l1 != l2) or (c1 != c2):
+            y = False
+    # Esse elif serve para verificar se foram colocados os dois números no tabuleiro no inicio do jogo
+    # Se ele for diferente de um, quer dizer que ele não precisa mais aparecer no tabuleiro
+    if (i == 1):
+        tabuleiro_origem[l2][c2] = 2
+        
+    
+        
+    
+        
 
 # Cria tabuleiro original
 def tabuleiroOriginalZerado (tabuleiro):
@@ -24,20 +60,17 @@ def tabuleiroOriginalZerado (tabuleiro):
 
 
 def menu ():
-    print("""\n
-          Welcome to the game 2048.
-          1. Start
-          2. Exit
-          Escolha a opção [1] para começar e [2] para sair.
-          """)
-
+    print("Welcome to the game 2048.")
+    print("1. Start")
+    print("2. Exit")
+    print("Escolha a opção [1] para começar e [2] para sair.")
     resp = int(input('> '))
     return resp
     
 
 # Menu para escolha de movimento dos blocos no tabuleiro
 def menuMovimentos ():
-    print(""""\n
+    print("""
           Para qual posição deseja mover os blocos?
           1. Para cima
           2. Para baixo
@@ -48,7 +81,7 @@ def menuMovimentos ():
     return resp
 
 
-#
+# Função responsável por movimentar o tabuleiro para cima, baixo, esquerda e direita
 def movimentandoBlocos (tabuleiro):
     escolha = menuMovimentos()
     # Movimento para cima
@@ -62,11 +95,7 @@ def movimentandoBlocos (tabuleiro):
                         if (tabuleiro[l-1][c]) == 0:
                             tabuleiro[l-1][c] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
-                            
-                        # Soma valores idênticos  
-                        else:  
-                            somaNumerosIdenticos(tabuleiro, l, c)
-                                
+                                                            
                     elif l == 2:
                         if (tabuleiro[l-2][c] == 0):
                             tabuleiro[l-2][c] = tabuleiro[l][c]
@@ -74,11 +103,7 @@ def movimentandoBlocos (tabuleiro):
                         elif (tabuleiro[l-1][c] == 0):
                             tabuleiro[l-1][c] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
-                            
-                        # Soma valores idênticos
-                        if (tabuleiro[l-1][c] == tabuleiro[l][c]):
-                            somaNumerosIdenticos(tabuleiro, l, c)
-                        
+                                                    
                     elif l == 3:
                         if (tabuleiro[l-3][c] == 0):
                             tabuleiro[l-3][c] = tabuleiro[l][c]
@@ -90,9 +115,8 @@ def movimentandoBlocos (tabuleiro):
                             tabuleiro[l-1][c] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
                         
-                        # Soma valores idênticos
-                        if (tabuleiro[l-1][c] == tabuleiro[l][c]):
-                            somaNumerosIdenticos(tabuleiro, l, c)
+                    # Soma valores idênticos
+                    somaNumerosIdenticos(tabuleiro, l, c, escolha)
                             
     # Movimento para baixo                    
     elif (escolha == 2):
@@ -123,6 +147,8 @@ def movimentandoBlocos (tabuleiro):
                         if (tabuleiro[l+1][c]) == 0:
                             tabuleiro[l+1][c] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
+                            
+                somaNumerosIdenticos(tabuleiro, l, c, escolha)
     # Movimento para esquerda            
     elif (escolha == 3):
         for l in range (0,4):
@@ -183,23 +209,85 @@ def movimentandoBlocos (tabuleiro):
                             tabuleiro[l][c] = 0
         
 
-def somaNumerosIdenticos (tabuleiro, l, c):
+def somaNumerosIdenticos (tabuleiro, l, c, escolha):
     soma = 0
-    if l == 1:
-        if (tabuleiro[l-1][c] == tabuleiro[l][c]):
-            soma = tabuleiro[l-1][c] + tabuleiro[l][c]
-            tabuleiro[l-1][c] = soma
-            tabuleiro[l][c] = 0
-    elif l == 2:
-            soma = tabuleiro[l-1][c] + tabuleiro[l][c]
-            tabuleiro[l-1][c] = soma
-            tabuleiro[l][c] = 0
-    elif l == 3:
-            soma = tabuleiro[l-1][c] + tabuleiro [l][c]
-            tabuleiro[l-1][c] = soma
-            tabuleiro [l][c] = 0  
+    if escolha == 1:
+        if l == 1:
+            if (tabuleiro[l-1][c] == tabuleiro[l][c]):
+                soma = tabuleiro[l-1][c] + tabuleiro[l][c]
+                tabuleiro[l-1][c] = soma
+                tabuleiro[l][c] = 0
+                
+        elif l == 2:
+            if ((tabuleiro[l][c] != 0 and tabuleiro[l-1][c] != 0) and (tabuleiro[l][c] == tabuleiro[l-1][c])):  
+                soma = tabuleiro[l][c] + tabuleiro[l-1][c]
+                tabuleiro[l-1][c] = soma
+                tabuleiro[l][c] = 0 
+                
+            elif (tabuleiro[l-1][c] == tabuleiro[l-2][c]):
+                soma = tabuleiro[l-1][c] + tabuleiro[l-2][c]
+                tabuleiro[l-2][c] = soma
+                tabuleiro[l-1][c] = 0   
+                
+        elif l == 3:
+            if ((tabuleiro[l][c] != 0 and tabuleiro[l-1][c]!= 0) and (tabuleiro[l][c] == tabuleiro[l-1][c])):
+                soma = tabuleiro[l][c] + tabuleiro[l-1][c]
+                tabuleiro[l-1][c] = soma
+                tabuleiro[l][c] = 0 
             
-    
+            elif (tabuleiro[l-2][c] == tabuleiro[l-1][c]):
+                soma = tabuleiro[l-2][c] + tabuleiro [l-1][c]
+                tabuleiro[l-2][c] = soma
+                tabuleiro [l-1][c] = 0 
+                
+            elif (tabuleiro[l-3][c] == tabuleiro[l-2][c]):
+                soma = tabuleiro[l-3][c] + tabuleiro [l-2][c]
+                tabuleiro[l-3][c] = soma
+                tabuleiro [l-2][c] = 0 
+                
+    if escolha == 2:  
+        if l == 0:
+            if ((tabuleiro[l][c] != 0 and tabuleiro[l+1][c] != 0) and (tabuleiro[l][c] == tabuleiro[l+1][c])):
+                soma = tabuleiro[l][c] + tabuleiro[l+1][c]
+                tabuleiro[l+1][c] = soma
+                tabuleiro[l][c] = 0
+                
+            elif (tabuleiro[l+1][c] == tabuleiro[l+2][c]):
+                soma = tabuleiro[l+1][c] + tabuleiro[l+2][c]
+                tabuleiro[l+2][c] = soma 
+                tabuleiro[l+1][c] = 0
+            
+            elif (tabuleiro[l+2][c] == tabuleiro[l+3][c]):
+                soma = tabuleiro[l+2][c] + tabuleiro[l+3][c]
+                tabuleiro[l+3][c] = soma
+                tabuleiro[l+2][c] = 0
+                
+        elif l == 1:
+            if ((tabuleiro[l][c] != 0 and tabuleiro[l+1][c] != 0) and (tabuleiro[l][c] == tabuleiro[l+1][c])):
+                soma = tabuleiro[l][c] + tabuleiro[l+1][c]
+                tabuleiro[l+1][c] = soma
+                tabuleiro[l][c] = 0
+            elif (tabuleiro[l+1][c] == tabuleiro[l+2][c]):
+                soma = tabuleiro[l+1][c] + tabuleiro[l+2][c]
+                tabuleiro[l+2][c] = soma
+                tabuleiro[l+1][c] = 0
+                
+        elif l == 2:
+            if (tabuleiro[l][c] == tabuleiro[l+1][c]):
+                soma = tabuleiro[l][c] + tabuleiro[l+1][c]
+                tabuleiro[l+1][c] = soma
+                tabuleiro[l][c] = 0
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 # Programa principal
 tabuleiro_origem =[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 opcao = 0
@@ -209,17 +297,9 @@ while (opcao != 3):
     opcao = menu() 
     
     if opcao == 1:
-        # Recebe números aleatórios para por em posições aleatórias no tabuleiro o número 2
-        l1, c1 = geraNumeros()
-        l2, c2 = geraNumeros()
-        tabuleiro_origem[l1][c1] = 2
-
-        # A condição abaixo serve para anular as posições iguais, pois devem estar em posições diferentes
-        if (l1 == l2 and c1 == c2):
-            l2, c2 = geraNumeros()
-        else:
-            tabuleiro_origem[l2][c2] = 2
-            
+        
+        colocaNumAleatorio(tabuleiro_origem)
+        
         tabuleiroOriginalZerado(tabuleiro_origem)
         
         movimentandoBlocos(tabuleiro_origem)
