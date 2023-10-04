@@ -80,7 +80,7 @@ def movimentandoBlocos (tabuleiro, escolha):
     # Movimento para cima
     if (escolha == 1):
         print('\n=======PARA CIMA=======\n')
-        # Percorrendo a matriz para saber se existe algum número para trocá-lo de posição
+        # Percorrendo a matriz para saber se existe algum espaço para colocar o número na posição desejada
         for l in range (0,4):
             for c in range (0,4):
                 # Se achar um número diferente de 0 na coluna da linha anterior, ele coloca o valor na coluna da linha anterior
@@ -115,6 +115,7 @@ def movimentandoBlocos (tabuleiro, escolha):
     # Movimento para baixo                    
     elif (escolha == 2):
         print('\n=======PARA BAIXO=======\n') 
+        # Percorrendo a matriz para saber se existe algum espaço para colocar o número na posição desejada
         for l in range (3,-1,-1):
             for c in range (3,-1,-1):
                 if (tabuleiro[l][c] != 0):
@@ -145,14 +146,15 @@ def movimentandoBlocos (tabuleiro, escolha):
                         if (tabuleiro[l+1][c]) == 0:
                             tabuleiro[l+1][c] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
-                            
-                somaNumerosIdenticos(tabuleiro, l, c, escolha)
+                    # Soma valores idênticos            
+                    somaNumerosIdenticos(tabuleiro, l, c, escolha)
                 
     # Movimento para esquerda            
     elif (escolha == 3):
+        # Percorrendo a matriz para saber se existe algum espaço para colocar o número na posição desejada
+        print('\n=======PARA ESQUERDA=======\n') 
         for l in range (0,4):
             for c in range (0,4):
-
                 if (tabuleiro[l][c] != 0):
                     
                     if c == 1:
@@ -185,15 +187,17 @@ def movimentandoBlocos (tabuleiro, escolha):
                     
     # Movimento para direita     
     elif (escolha == 4):
-        for l in range (0,4):
-            for c in range (0,4):
+        # Percorrendo a matriz para saber se existe algum espaço para colocar o número na posição desejada
+        print('\n=======PARA DIREITA=======\n') 
+        for l in range (3,-1,-1):
+            for c in range (3,-1,-1):
                 if (tabuleiro[l][c] != 0):
 
                     if c == 0:
-                        if (tabuleiro[l][c+3] == 0):
+                        if (tabuleiro[l][c+3] == 0) and (tabuleiro[l][c+2] == 0) and (tabuleiro[l][c+1] == 0):
                             tabuleiro[l][c+3] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
-                        elif (tabuleiro[l][c+2] == 0):
+                        elif (tabuleiro[l][c+2] == 0) and (tabuleiro[l][c+1] == 0):
                             tabuleiro[l][c+2] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
                         elif (tabuleiro[l][c+1] == 0):
@@ -201,7 +205,7 @@ def movimentandoBlocos (tabuleiro, escolha):
                             tabuleiro[l][c] = 0
                             
                     elif c == 1:
-                        if (tabuleiro[l][c+2] == 0):
+                        if (tabuleiro[l][c+2] == 0) and (tabuleiro[l][c+1] == 0):
                             tabuleiro[l][c+2] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
                         elif (tabuleiro[l][c+1] == 0):
@@ -212,7 +216,9 @@ def movimentandoBlocos (tabuleiro, escolha):
                         if (tabuleiro[l][c+1]) == 0:
                             tabuleiro[l][c+1] = tabuleiro[l][c]
                             tabuleiro[l][c] = 0
-        
+                            
+                    # Soma valores idênticos        
+                    somaNumerosIdenticos(tabuleiro, l, c, escolha)
 
 def somaNumerosIdenticos (tabuleiro, l, c, escolha):
     soma = 0
@@ -250,8 +256,9 @@ def somaNumerosIdenticos (tabuleiro, l, c, escolha):
                 soma = tabuleiro[l][c] + tabuleiro[l-1][c]
                 tabuleiro[l-1][c] = soma
                 tabuleiro[l][c] = 0       
+                
     # Soma para baixo    
-    if escolha == 2:  
+    elif escolha == 2:  
         if l == 0:
             if (tabuleiro[l+3][c] == tabuleiro[l+2][c]):
                 soma = tabuleiro[l+3][c] + tabuleiro[l+2][c]
@@ -284,9 +291,76 @@ def somaNumerosIdenticos (tabuleiro, l, c, escolha):
                 soma = tabuleiro[l][c] + tabuleiro[l+1][c]
                 tabuleiro[l+1][c] = soma
                 tabuleiro[l][c] = 0
+                
+    # Soma para esquerda
+    elif escolha == 3:
+        if c == 1:
+            if (tabuleiro[l][c-1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c-1] + tabuleiro[l][c]
+                tabuleiro[l][c-1] = soma
+                tabuleiro[l][c] = 0
+                
+        elif c == 2:
+            if (tabuleiro[l][c-2] == tabuleiro[l][c-1]):  
+                soma = tabuleiro[l][c-2] + tabuleiro[l][c-1]
+                tabuleiro[l][c-2] = soma
+                tabuleiro[l][c-1] = 0 
+                
+            elif (tabuleiro[l][c-1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c-1] + tabuleiro[l][c]
+                tabuleiro[l][c-1] = soma
+                tabuleiro[l][c] = 0   
+                
+        elif c == 3:
+            if (tabuleiro[l][c-3] == tabuleiro[l][c-2]):
+                soma = tabuleiro[l][c-3] + tabuleiro [l][c-2]
+                tabuleiro[l][c-3] = soma
+                tabuleiro [l][c-2] = 0 
+                
+            elif (tabuleiro[l][c-2] == tabuleiro[l][c-1]):
+                soma = tabuleiro[l][c-2] + tabuleiro [l][c-1]
+                tabuleiro[l][c-2] = soma
+                tabuleiro [l][c-1] = 0 
+                
+            elif (tabuleiro[l][c-1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c-1] + tabuleiro[l][c]
+                tabuleiro[l][c-1] = soma
+                tabuleiro[l][c] = 0
+                
+    # Soma para direita   
+    elif escolha == 4:
+        if c == 0:
+            if (tabuleiro[l][c+3] == tabuleiro[l][c+2]):
+                soma = tabuleiro[l][c+2] + tabuleiro[l][c+3]
+                tabuleiro[l][c+3] = soma
+                tabuleiro[l][c+2] = 0
             
-        
-        
+            elif (tabuleiro[l][c+2] == tabuleiro[l][c+1]):
+                soma = tabuleiro[l][c+2] + tabuleiro[l][c+1]
+                tabuleiro[l][c+2] = soma 
+                tabuleiro[l][c+1] = 0
+                
+            elif (tabuleiro[l][c+1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c] + tabuleiro[l][c+1]
+                tabuleiro[l][c+1] = soma
+                tabuleiro[l][c] = 0
+                
+        elif c == 1:
+            if (tabuleiro[l][c+2] == tabuleiro[l][c+1]):
+                soma = tabuleiro[l][c+2] + tabuleiro[l][c+1]
+                tabuleiro[l][c+2] = soma
+                tabuleiro[l][c+1] = 0
+                
+            elif (tabuleiro[l][c+1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c+1] + tabuleiro[l][c]
+                tabuleiro[l][c+1] = soma
+                tabuleiro[l][c] = 0
+                
+        elif c == 2:
+            if (tabuleiro[l][c+1] == tabuleiro[l][c]):
+                soma = tabuleiro[l][c+1] + tabuleiro[l][c]
+                tabuleiro[l][c+1] = soma
+                tabuleiro[l][c] = 0
         
         
         
@@ -316,5 +390,5 @@ while (opcao != 2):
         
         movimentandoBlocos(tabuleiro_origem, escolha)
         
-        tabuleiroOriginalZerado(tabuleiro_origem)
+        
         
