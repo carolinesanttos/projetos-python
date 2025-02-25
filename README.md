@@ -6,3 +6,5 @@
 2° projeto: Economizando no ponto de gasolina.
    - Projeto feito na disciplina de MI Algoritmo do curso Engenharia da Computação da UEFS.
    - Tem como objetivo ajudar os motoristas a identificar o posto com o combustível mais barato de acordo com os seus veículos e a quantidade de litros que desejam abastecer.
+
+3° projeto: Jogo 2048
